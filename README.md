@@ -1,4 +1,4 @@
-﻿# HyperMoE
+# HyperMoE
 
 Reference implementation of **HyperMoE**, a multimodal model that predicts
 pathological complete response (pCR) from a whole-slide image (WSI) and four
@@ -68,19 +68,21 @@ settings.
 
 ## Run
 
+The defaults in `config.py` are the configuration reported in the paper, so a
+plain call reproduces it:
+
     python train.py \
         --wsi-dir data/wsi --mri-dir data/mri --split-dir data/splits \
-        --run-name foldset --folds 0,1,2,3,4 \
-        --epochs 40 --lr 2.05e-4 --temporal-dim 128 \
-        --temporal-delta \
-        --level-radii 0.75 0.60 0.45 0.30 0.15 --level-radius-band 0.05 \
-        --level-adaptor --cone-level-edges --cone-aperture-deg 60 \
-        --cone-normalize --cone-tie-class \
-        --expert-split modality --fusion-weight-mode fixed --fusion-w-init 0.1
+        --run-name foldset --folds 0,1,2,3,4
 
-`python train.py --help` lists every flag; the defaults in `config.py` describe
-the same model with the ablation switches turned off. `python
-dataset_loader.py --fold 0` prints the size and prevalence of each split.
+The ablation arms are reached by overriding single switches, for example
+`--geometry euclidean`, `--level-radius-band 0` (no per-level placement),
+`--cone-aperture-deg 20`, `--lambda-cone 0 --lambda-ent 0 --lambda-hyp 0`,
+`--no-level-adaptor`, `--hierarchy-mode no_topo`, `--no-temporal-delta`,
+`--fusion-weight-mode gate`, `--num-experts 1 --expert-split mixed`.
+
+`python train.py --help` lists every flag. `python dataset_loader.py --fold 0`
+prints the size and prevalence of each split.
 
 ## Outputs
 
