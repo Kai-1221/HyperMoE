@@ -19,19 +19,19 @@ class Config:
     class_weights: tuple[float, float] = (1.0, 2.5)
 
     temporal: str = "t2"
-    temporal_dim: int = 512
+    temporal_dim: int = 128
     temporal_heads: int = 4
     temporal_dropout: float = 0.1
     temporal_share: bool = False
-    temporal_delta: bool = False
+    temporal_delta: bool = True
 
     geometry: str = "hyper"
     hierarchy_mode: str = "full"
-    level_adaptor: bool = False
+    level_adaptor: bool = True
     level_adaptor_hidden: int = 64
-    level_radii: list[float] = field(default_factory=list)
+    level_radii: list[float] = field(default_factory=lambda: [0.75, 0.6, 0.45, 0.3, 0.15])
     level_radius_band: float = 0.05
-    cone_level_edges: bool = False
+    cone_level_edges: bool = True
     head_radius: float = 0.0
     num_experts: int = 2
     moe_hidden: int = 512
@@ -40,25 +40,25 @@ class Config:
     router_mode: str = "proto"
     router_tau_init: float = 1.0
     expert_indep_init: bool = False
-    expert_split: str = "mixed"
-    fusion_weight_mode: str = "gate"
-    fusion_w_init: float = 0.5
+    expert_split: str = "modality"
+    fusion_weight_mode: str = "fixed"
+    fusion_w_init: float = 0.1
     expert_aux: float = 0.0
     patch_aux: float = 0.0
     patch_topk_frac: float = 0.05
     exp_map_max_norm: float = 3.0
     class_cone_k: float = 0.5
-    cone_aperture_deg: float = 0.0
-    cone_normalize: bool = False
-    cone_tie_class: bool = False
+    cone_aperture_deg: float = 60.0
+    cone_normalize: bool = True
+    cone_tie_class: bool = True
 
     proto_init_radius: float = 1.0
     proto_init_sep: float = 1.2
 
     lambda_bal: float = 0.05
     lambda_hyp: float = 0.1
-    lambda_ent: float = 0.01
-    lambda_cone: float = 0.01
+    lambda_ent: float = 0.02
+    lambda_cone: float = 0.2
     lambda_proto_sep: float = 0.01
     hyp_margin: float = 0.5
     hyp_cap: float = 2.0
@@ -68,10 +68,10 @@ class Config:
 
     folds: int = 5
     seed: int = 42
-    epochs: int = 150
+    epochs: int = 40
     batch_size: int = 1
     grad_accum: int = 16
-    lr: float = 2e-5
+    lr: float = 2.05e-4
     weight_decay: float = 5e-3
     grad_clip: float = 1.0
     patience: int = 12
